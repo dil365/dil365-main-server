@@ -1,26 +1,65 @@
 import { Injectable } from '@nestjs/common';
 import { CreateUserDetailDto } from './dto/create-user_detail.dto';
 import { UpdateUserDetailDto } from './dto/update-user_detail.dto';
+import { PrismaService } from 'src/prisma.service';
 
 @Injectable()
 export class UserDetailsService {
-  create(createUserDetailDto: CreateUserDetailDto) {
-    return 'This action adds a new userDetail';
+  constructor(private prisma: PrismaService) { }
+  async create(id: number, createUserDetailDto: CreateUserDetailDto) {
+    try {
+      return await this.prisma.userDetails.create({
+        data: {
+          user_id: id,
+          first_name: createUserDetailDto.first_name,
+          last_name: createUserDetailDto.last_name,
+          birthdate: createUserDetailDto.birthdate
+        }
+      });
+    } catch (error) {
+      throw error;
+    } finally {
+      this.prisma.$disconnect()
+    }
   }
 
   findAll() {
-    return `This action returns all userDetails`;
+    try {
+
+    } catch (error) {
+      throw error;
+    } finally {
+      this.prisma.$disconnect()
+    }
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} userDetail`;
+    try {
+
+    } catch (error) {
+      throw error;
+    } finally {
+      this.prisma.$disconnect()
+    }
   }
 
   update(id: number, updateUserDetailDto: UpdateUserDetailDto) {
-    return `This action updates a #${id} userDetail`;
+    try {
+
+    } catch (error) {
+      throw error;
+    } finally {
+      this.prisma.$disconnect()
+    }
   }
 
   remove(id: number) {
-    return `This action removes a #${id} userDetail`;
+    try {
+
+    } catch (error) {
+      throw error;
+    } finally {
+      this.prisma.$disconnect()
+    }
   }
 }
