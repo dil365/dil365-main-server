@@ -6,16 +6,16 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.AppModule = void 0;
+exports.TokenSessionsModule = void 0;
 const common_1 = require("@nestjs/common");
-const users_module_1 = require("./api/users/users.module");
-let AppModule = class AppModule {
+const token_sessions_service_1 = require("./token_sessions.service");
+const prisma_service_1 = require("../prisma.service");
+let TokenSessionsModule = class TokenSessionsModule {
 };
-exports.AppModule = AppModule;
-exports.AppModule = AppModule = __decorate([
+exports.TokenSessionsModule = TokenSessionsModule;
+exports.TokenSessionsModule = TokenSessionsModule = __decorate([
     (0, common_1.Module)({
-        imports: [users_module_1.UsersModule],
-        providers: [],
+        providers: [token_sessions_service_1.TokenSessionsService, prisma_service_1.PrismaService],
     })
-], AppModule);
-//# sourceMappingURL=app.module.js.map
+], TokenSessionsModule);
+//# sourceMappingURL=token_sessions.module.js.map

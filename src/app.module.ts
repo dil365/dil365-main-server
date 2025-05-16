@@ -1,10 +1,7 @@
 import { Module } from "@nestjs/common";
-import { UsersModule } from "./users/users.module";
-import { UserDetailsModule } from "./user_details/user_details.module";
-import { TokenSessionsModule } from "./token_sessions/token_sessions.module";
-
+import { UsersModule } from "./api/users/users.module";
 @Module({
-  imports: [UsersModule, UserDetailsModule, TokenSessionsModule],
+  imports: [UsersModule],
   providers: [],
 })
 export class AppModule {}
