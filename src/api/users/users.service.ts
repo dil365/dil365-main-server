@@ -4,7 +4,7 @@ import {
 import { CreateUserDto } from "./dto/create-user.dto";
 import { UpdateUserDto } from "./dto/update-user.dto";
 import { PrismaService } from "src/common/prisma.service";
-import * as bcrypt from "bcrypt";
+import * as argon2 from "argon2";
 @Injectable()
 export class UsersService {
   constructor(private prisma: PrismaService) { }
@@ -14,7 +14,7 @@ export class UsersService {
       /**
        * hash user password before saving progress
        */
-      const hashed = await bcrypt.hash(createUserDto.password, parseInt(process.env.BCRYPT_SALT_VALUE));
+      const hashed = await argon2.hash(createUserDto.password);
 
       return await this.prisma.users.create({
         data: {
@@ -69,7 +69,7 @@ export class UsersService {
         /**
          * compile user hashed password with password value
         */
-        const compare = await bcrypt.compare(args.password, user.password);
+        const compare = await argon2.verify(user.password, args.password);
         if (compare) {
           return this.filter(user);
         }

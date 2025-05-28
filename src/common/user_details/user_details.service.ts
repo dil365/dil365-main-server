@@ -13,7 +13,7 @@ export class UserDetailsService {
           user_id: id,
           first_name: createUserDetailDto.first_name,
           last_name: createUserDetailDto.last_name,
-          birthdate: createUserDetailDto.birthdate
+          birthdate: new Date(createUserDetailDto.birthdate)
         }
       });
     } catch (error) {
