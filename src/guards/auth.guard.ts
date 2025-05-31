@@ -13,9 +13,12 @@ export class AuthGuard implements CanActivate {
             if (token_split[0] === 'Bearer') {
                 try {
                     //const payload = await this.jwt.verifyAsync(token, { secret: process.env.JWT_TOKEN_SECRET });
-                    const payload = await this.session.verify({ token })
+                    const payload = await this.session.verify({ token, created_for: 'access_token' })
                     if(payload) {
-                        req.user = { auth: payload };
+                        req.user = { 
+                            id: payload.owner_id,
+                            created_at: payload.created_at
+                         };
                         return true;
                     }
                     throw new UnauthorizedException('Invalid token');

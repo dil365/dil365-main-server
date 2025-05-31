@@ -52,9 +52,9 @@ export class UsersService {
     }
   }
 
-  async findBy(args: { email?: string; id?: number }) {
+  async findBy(args: { email?: string; id?: number }, withDetails: boolean = false) {
     try {
-      return await this.prisma.users.findFirst({ where: args });
+      return await this.prisma.users.findFirst({ where: args, include: {UserDetails: withDetails} });
     } catch (error) {
       throw error;
     } finally {

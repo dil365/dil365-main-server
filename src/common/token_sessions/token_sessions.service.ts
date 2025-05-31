@@ -81,14 +81,14 @@ export class TokenSessionsService {
     }
   }
 
-  async verify(args: { token: CreateTokenSessionDto['token'] }) {
+  async verify(args: { token: CreateTokenSessionDto['token'], created_for: CreateTokenSessionDto['created_for'] }) {
     try {
       /*
        * Look for is there any session with the token;
        * - If token not found than return null;
        * */
       const session = await this.prisma.tokenSessions.findFirst({
-        where: { token: args.token }
+        where: { token: args.token, created_for: args.created_for }
       });
       if (!session) {
         return null;

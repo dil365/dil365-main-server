@@ -1,9 +1,21 @@
-import { Controller, Post, Body, HttpCode, HttpStatus, ConflictException, ForbiddenException } from '@nestjs/common';
+import { 
+  Get,
+  Post, 
+  Body, 
+  HttpCode, 
+  HttpStatus, 
+  Controller, 
+  ConflictException, 
+  ForbiddenException, 
+  UseGuards,
+  Request
+} from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto, LoginUserDto } from './dto/create-user.dto';
 import { UserDetailsService } from 'src/common/user_details/user_details.service';
 import { CreateUserDetailDto } from 'src/common/user_details/dto/create-user_detail.dto';
 import { TokenSessionsService } from 'src/common/token_sessions/token_sessions.service';
+import { AuthGuard } from 'src/guards/auth.guard';
 
 @Controller('users')
 export class UsersController {
@@ -76,5 +88,17 @@ export class UsersController {
      * send response to client
      */
     return access_token;
+  }
+
+  @Get('/me')
+  @UseGuards(AuthGuard)
+  @HttpCode(HttpStatus.ACCEPTED)
+  async authentication(@Request() req){
+    const user = await this.usersService.findBy({ id: req.user.id }, true);
+    return {
+      ...user.UserDetails,
+      email: user.email,
+      email_registered: user.email_registered,
+    };
   }
 }

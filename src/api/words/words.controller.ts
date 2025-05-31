@@ -29,12 +29,12 @@ export class WordsController {
   @HttpCode(HttpStatus.CREATED)
   @UseGuards(AuthGuard)
   async create(@Body() createWordSettingsDto: CreateWordSettingsDto) {
-      const result = await this.wordsService.setWords(createWordSettingsDto);
-      return {
-        id: result.id,
-        message: "Done",
-        success: true
-      }
+    const result = await this.wordsService.setWords(createWordSettingsDto);
+    return {
+      id: result.id,
+      message: "Done",
+      success: true
+    }
   }
 
   // @Get()
