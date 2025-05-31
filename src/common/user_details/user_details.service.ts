@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { CreateUserDetailDto } from './dto/create-user_detail.dto';
 import { UpdateUserDetailDto } from './dto/update-user_detail.dto';
-import { PrismaService } from 'src/prisma.service';
+import { PrismaService } from 'src/common/prisma.service';
 
 @Injectable()
 export class UserDetailsService {
@@ -13,7 +13,7 @@ export class UserDetailsService {
           user_id: id,
           first_name: createUserDetailDto.first_name,
           last_name: createUserDetailDto.last_name,
-          birthdate: createUserDetailDto.birthdate
+          birthdate: new Date(createUserDetailDto.birthdate)
         }
       });
     } catch (error) {
