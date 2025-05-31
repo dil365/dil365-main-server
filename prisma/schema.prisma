@@ -7,6 +7,37 @@ generator client {
   provider = "prisma-client-js"
 }
 
+enum LanguageLevel {
+  A1
+  A2
+  B1
+  B2
+  C1
+  C2
+}
+
+enum SyntacticTypes {
+  noun
+  verb
+  adjective
+  adverb
+  pronoun
+  preposition
+  conjunction
+  interjection
+}
+
+model Words {
+  id          Int            @id @default(autoincrement())
+  sl          String         @db.VarChar(50)
+  level       LanguageLevel
+  word        String         @db.VarChar(100)
+  description String         @db.Text
+  example     String         @db.Text
+  category    String         @db.VarChar(100)
+  syntactic   SyntacticTypes
+  created_at  DateTime       @default(now()) @db.DateTime(0)
+}
 model TokenSessions {
   id          Int      @id @default(autoincrement())
   created_for String   @db.VarChar(100)

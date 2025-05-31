@@ -98,16 +98,20 @@ export class TokenSessionsService {
        * Verify the token via jwt and must be async progress;
        * - If verifing faild return null and remove token session from `TokenSessions` table;
        * */
-      const result: CreateTokenSessionDto['payload'] = await this.jwt.verifyAsync(args.token, {
-        secret: process.env.JWT_TOKEN_SECRET
-      });
-      if (!result) {
+      try {
+        const result: CreateTokenSessionDto['payload'] = await this.jwt.verifyAsync(args.token, {
+          secret: process.env.JWT_TOKEN_SECRET
+        });
+        if (!result) {
+          throw new Error('Something went wrong')
+        }
+      } catch(error) {
         await this.prisma.tokenSessions.delete({
           where: {
             id: session.id
           }
         });
-        return null;
+        throw error;
       }
 
       /*
