@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, InternalServerErrorException, UseGuards, HttpStatus, HttpCode } from '@nestjs/common';
+import { Controller, Post, Body, Request, InternalServerErrorException, UseGuards, HttpStatus, HttpCode } from '@nestjs/common';
 import { WordsService } from './words.service';
 import { CreateWordDto, CreateWordSettingsDto } from './dto/create-word.dto';
 import { UpdateWordDto } from './dto/update-word.dto';
@@ -28,8 +28,8 @@ export class WordsController {
   @Post('/create')
   @HttpCode(HttpStatus.CREATED)
   @UseGuards(AuthGuard)
-  async create(@Body() createWordSettingsDto: CreateWordSettingsDto) {
-    const result = await this.wordsService.setWords(createWordSettingsDto);
+  async create(@Body() createWordSettingsDto: CreateWordSettingsDto, @Request() req) {
+    const result = await this.wordsService.setWords(createWordSettingsDto, req.user.id || null);
     return {
       id: result.id,
       message: "Done",

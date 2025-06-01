@@ -1,5 +1,4 @@
 import { Injectable, CanActivate, ExecutionContext, UnauthorizedException } from '@nestjs/common';
-import { JwtService } from '@nestjs/jwt';
 import { TokenSessionsService } from 'src/common/token_sessions/token_sessions.service';
 
 @Injectable()

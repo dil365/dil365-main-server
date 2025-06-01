@@ -32,11 +32,11 @@ export class WordsService {
             for_example_for_you,
           })
         }
-      ]);      
+      ]);
       response.result.new_words.forEach(async (item) => {
         try {
           await this.setWords(item);
-        } catch(err) {
+        } catch (err) {
           console.error(err)
         }
       })
@@ -45,13 +45,13 @@ export class WordsService {
       throw error;
     }
   }
-  async setWords(data: CreateWordSettingsDto) {
+  async setWords(data: CreateWordSettingsDto, user_id?: number) {
     try {
-      const already_exist = await this.prisma.words.findFirst({ where: { word: data.word, level: data.level, syntactic: data.syntactic } });
-      if (!already_exist){
-        return await this.prisma.words.create({
+      let wordData = await this.prisma.words.findFirst({ where: { word: data.word, level: data.level, syntactic: data.syntactic } });
+      if (!wordData) {
+        wordData = await this.prisma.words.create({
           data: {
-            word: data.word,
+            word: data.word?.toUpperCase(),
             description: data.definition,
             level: data.level,
             syntactic: data.syntactic,
@@ -61,7 +61,21 @@ export class WordsService {
           }
         });
       }
-      throw new ConflictException(`'${data.word}' already exist`);
+      if (user_id) {
+        const alreadyExist = await this.prisma.userWords.findFirst({ where: { word_id: wordData.id, user_id } });
+
+        if(alreadyExist) {
+          throw new ConflictException(`'${wordData.word}' already exist`)
+        }
+
+        await this.prisma.userWords.create({
+          data: {
+            user_id,
+            word_id: wordData.id
+          }
+        })
+      }
+      return wordData;
     } catch (error) {
       throw error;
     } finally {
